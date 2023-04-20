@@ -16,7 +16,7 @@ const Favorite = () => {
 
     debugger;
     return (
-        <div className="main">
+        <div className="main-Cards">
             <div className="taps">
                 <NavLink to="/" className="tap">All</NavLink>
                 <NavLink to="/favCards" className="tap">My faves</NavLink>

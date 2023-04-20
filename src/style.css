@@ -43,9 +43,6 @@ body {
     z-index:1;
     position: relative;
 
-    width: 4.25rem;
-    height: 5.625rem;
-    margin: 0 0 0 1rem;
     padding: 2.188rem 1.375rem 2.063rem;
     /* opacity: 0.06; */
     border-radius: 6px; 
@@ -62,7 +59,7 @@ body {
     text-overflow: ellipsis;
 
     width: 27.5rem;
-    margin: 2.25rem 1rem 0.875rem 0;
+
     font-family: Roboto;
     font-size: 0.875rem;
     font-weight: 500;
@@ -149,11 +146,9 @@ btn {
 .tap {
     width: 6.125rem;
     height: 1.938rem;
-    padding: 0.188rem 1rem 0 1.063rem;
+    /* padding: 0.188rem 1rem 0 1.063rem; */
     border-radius: 2px;
     border: solid 1px #d6d6d6;
-
-    font-family: Roboto;
     font-size: 1rem;
     font-weight: 500;
     font-stretch: normal;
@@ -168,11 +163,9 @@ btn {
 .taps .active{
     width: 6.125rem;
     height: 1.938rem;
-    padding: 0.188rem 2.438rem 0 2.5rem;
+    /* padding: 0.188rem 2.438rem 0 2.5rem; */
     border-radius: 2px;
     border: solid 1px #1797ff;
-
-    font-family: Roboto;
     font-size: 1rem;
     font-weight: 500;
     font-stretch: normal;
@@ -193,7 +186,7 @@ btn {
 
 
 .main-conteiner{
-    padding: 60px 100px;
+    padding: 30px 100px;
 }
 
 
@@ -213,12 +206,18 @@ btn {
     font-size: 16px;
     cursor: pointer;
 
-   
 }
 
+.card-body{
 
+    padding: 20px;
+}
 
+.icon--timer {
 
+    padding-right: 0.5em;
+    vertical-align: middle;
+}
 
 
 .pagination {

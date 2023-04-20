@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import Pagination from './components/Pagination/Pagination';
 import Card from './components/Card/Card';
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Favorite from './components/Card/Favorite';
 
@@ -25,13 +25,13 @@ function App() {
 }
 
 const Home = () => {
-  let [pageNumber, updatePageNumber] = useState(1);     // paginacion
-  let [fetchedData, updateFetchedData] = useState([]);   ///  informacion del api
+  let [pageNumber, updatePageNumber] = useState(1);     // pagination
+  let [fetchedData, updateFetchedData] = useState([]);   ///  API data
 
   let [type, updateType] = React.useState('angular');    
-  //const [isActive, setActive] = React.useState(false);
+ 
   
-  // estructura del api
+  // api
   let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
 
 
@@ -68,7 +68,7 @@ const Home = () => {
 
           updateFetchedData(newData);
       })();
-    }, [api]);   // watch, cuando la url del api cambien se vuelve a jecutar
+    }, [api]);   
 
     
     useEffect(() => {
@@ -76,27 +76,12 @@ const Home = () => {
     }, [fetchedData]);
 
     console.log(fetchedData); 
-    
-    // const cards = NewArray?.map(item => {
-    //   return (
-    //       <Card
-    //           key={item.story_id}
-    //           {...item}  
-    //       />
-    //   )
-    // })
-    
+        
     function handleChange(event) {
       debugger;
       const {name, value} = event.target
       updateType(value);
   }
-
-  function clicTap(event) {
-    debugger;
-   // setActive(!isActive);
-  }
-
 
   function UpdateData(newValue) {
     debugger;
@@ -112,36 +97,36 @@ const Home = () => {
   return (
     
     <div className="App">
-      <div className="taps">
-          <NavLink to="/" className="tap">All</NavLink>
-          <NavLink to="/favCards" className="tap">My faves</NavLink>
-      </div>
+       <div className="main">
+        <div className="taps">
+            <NavLink to="/" className="tap">All</NavLink>
+            <NavLink to="/favCards" className="tap">My faves</NavLink>
+        </div>   
+      <div className="main-conteiner">
+          <div className="selectType">
+              <select className="type-select"
+                        id="type"
+                        value={type}
+                        onChange={handleChange}
+                        name="type"
+                    >
+                        <option value="angular">angular</option>
+                        <option value="reactjs">reactjs</option>
+                        <option value="vuejs">vuejs</option>
 
-     
-     <div className="main-conteiner">
-        <div className="selectType">
-            <select className="type-select"
-                      id="type"
-                      value={type}
-                      onChange={handleChange}
-                      name="type"
-                  >
-                      <option value="angular">angular</option>
-                      <option value="reactjs">reactjs</option>
-                      <option value="vuejs">vuejs</option>
-
-            </select>
+              </select>
+          </div>
+        
+          <section className="cards-list">
+              <Card  results={fetchedData}   UpdateData={UpdateData} />
+          </section>
         </div>
-       
-        <section className="cards-list">
-            <Card  results={fetchedData}   UpdateData={UpdateData} />
-        </section>
-      </div>
-      { <Pagination
-        pages={fetchedData.nbPages}
-        pageNumber={pageNumber}
-        updatePageNumber={updatePageNumber}
-      /> }
+        { <Pagination
+          pages={fetchedData.nbPages}
+          pageNumber={pageNumber}
+          updatePageNumber={updatePageNumber}
+        /> }
+      </div>        
    </div>
   );
 
