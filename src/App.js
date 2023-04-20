@@ -34,7 +34,7 @@ const Home = () => {
 
  // call api
  let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
-  debugger;
+
   
     useEffect(() => {
       if (window.localStorage !== undefined) {
@@ -50,7 +50,7 @@ const Home = () => {
         let angularItems = JSON.parse(localStorage.getItem('angularData'));
         let reactItems = JSON.parse(localStorage.getItem('reactjsData'));
         let vueItems = JSON.parse(localStorage.getItem('vuejsData'));
-        debugger;
+      
         if (angularItems  && type === "angular") {
             updateFetchedData(angularItems);
         }
@@ -68,7 +68,7 @@ const Home = () => {
       (async function () {
         let data = await fetch(api).then((res) => res.json());
         var newData= [];
-        debugger;
+        
         data.hits.map(item => {
 
           // select only those with non-null data
@@ -99,7 +99,7 @@ const Home = () => {
 
             }
          })
-         debugger;
+        
         
         if( !window.localStorage.angularData || !window.localStorage.reactjsData || !window.localStorage.vuejsData ){
            updateFetchedData(newData);  
@@ -113,7 +113,7 @@ const Home = () => {
 
     
     useEffect(() => {
-      debugger;
+   
       if(type === "angular"){
         localStorage.setItem('angularData', JSON.stringify(fetchedData));
       }    
@@ -133,7 +133,7 @@ const Home = () => {
   }
 
   function UpdateData(newValue) {
-    debugger;
+ 
     updateFetchedData(prev => {
       return prev.map((el) => {
         return el.id === newValue.id ? {...el, isFavorite: !el.isFavorite} : el
