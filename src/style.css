@@ -110,23 +110,20 @@ body {
     display: grid;
     grid-auto-rows: auto;
     grid-gap: 2rem;
-
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
 }
 
-
-/* Screen larger than 600px? 2 column */
-@media (min-width: 600px) {
-    .cards-list { grid-template-columns: repeat(2, 1fr); }
-  }
-  
-  /* Screen larger than 900px? 3 columns */
-  @media (min-width: 900px) {
-    .cards-list { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
-  }
-
-
-
-
+/* Small devices */	
+@media (max-width: 768px) {
+	.cards-list  { grid-template-columns: repeat(1, 1fr); }
+    .main-conteiner {
+        padding: 10px 10px !important;
+    }
+    .navbar {
+        position: relative;
+    }  
+ 
+}
 
 
 btn {
@@ -223,6 +220,7 @@ btn {
 .card-body:hover{
     cursor: pointer;
     opacity:0.5;
+    transform: translateY(-1px);
 }
 
 .icon--favorite:hover{
@@ -264,3 +262,8 @@ btn {
     color: rgb(198, 197, 202);
     border: 1px solid rgb(198, 197, 202);
   }
+
+
+
+
+ 

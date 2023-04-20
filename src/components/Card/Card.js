@@ -14,7 +14,7 @@ export default function Card(results) {
         results.UpdateData(item);
     };
 
-    debugger;
+    
     if (results) {
         display = results.results.map((x) => {
             let { author, story_title, created_at } = x;

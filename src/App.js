@@ -12,7 +12,7 @@ import Favorite from './components/Card/Favorite';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="nav">
         <Navbar />
       </div>
       <Routes>
@@ -28,12 +28,32 @@ const Home = () => {
   let [pageNumber, updatePageNumber] = useState(1);     // pagination
   let [fetchedData, updateFetchedData] = useState([]);   ///  API data
 
-  let [type, updateType] = React.useState('angular');    
- 
-  
-  // api
-  let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
+  let [type, updateType] = React.useState('');    
 
+ // api
+ let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
+  debugger;
+    
+    useEffect(() => {
+      if (window.localStorage !== undefined) {
+        let nbPages = JSON.parse(localStorage.getItem('nbPages'));
+        let angularItems = JSON.parse(localStorage.getItem('angularData'));
+        let reactItems = JSON.parse(localStorage.getItem('reactjsData'));
+        let vueItems = JSON.parse(localStorage.getItem('vuejsData'));
+        debugger;
+        if (angularItems  && type === "angular") {
+            updateFetchedData(angularItems);
+        }
+        if (reactItems && type === "reactjs") {
+          updateFetchedData(reactItems);
+        }
+        if (vueItems && type === "vuejs") {
+          updateFetchedData(vueItems);
+        }
+      }  
+    }, [api]);
+  
+ 
     useEffect(() => {
       (async function () {
         let data = await fetch(api).then((res) => res.json());
@@ -53,8 +73,8 @@ const Home = () => {
              type: type
            }
             newData.nbPages =  data.nbPages;  
-          
-           debugger;
+            localStorage.setItem('nbPages', JSON.stringify(newData.nbPages));
+           
             // check that the ids are unique 
             const checkUnique = newData.some(element => {
               if (element.id === item.story_id) {
@@ -62,36 +82,38 @@ const Home = () => {
                 }
                 return false;
               });
-              debugger;
+             
               if(!checkUnique){
                 newData.push(newItem);  
               }  
 
             }
          })
+         debugger;
+        
+        if( !window.localStorage.angularData || !window.localStorage.reactjsData || !window.localStorage.vuejsData ){
+           updateFetchedData(newData);  
+         }
+          
 
-          updateFetchedData(newData);
+
       })();
     }, [api]);   
 
+
     
     useEffect(() => {
-
+      debugger;
       if(type === "angular"){
         localStorage.setItem('angularData', JSON.stringify(fetchedData));
-      }
-      
+      }    
       if(type === "reactjs"){
         localStorage.setItem('reactjsData', JSON.stringify(fetchedData));
       }
-
       if(type === "vuejs"){
         localStorage.setItem('vuejsData', JSON.stringify(fetchedData));
       }
-
       localStorage.setItem('fetchedData', JSON.stringify(fetchedData));
-
-
     }, [fetchedData]);
 
         
@@ -101,6 +123,7 @@ const Home = () => {
   }
 
   function UpdateData(newValue) {
+    debugger;
     updateFetchedData(prev => {
       return prev.map((el) => {
         return el.id === newValue.id ? {...el, isFavorite: !el.isFavorite} : el
@@ -111,19 +134,20 @@ const Home = () => {
   return (
     
     <div className="App">
-       <div className="main">
+       <main>
         <div className="taps">
             <NavLink to="/" className="tap">All</NavLink>
             <NavLink to="/favCards" className="tap">My faves</NavLink>
         </div>   
-      <div className="main-conteiner">
-          <div className="selectType">
+        <div className="main-conteiner">
+        <div className="selectType">
               <select className="type-select"
                         id="type"
                         value={type}
                         onChange={handleChange}
                         name="type"
                     >
+                        <option value="" disabled>Select your news</option>
                         <option value="angular">angular</option>
                         <option value="reactjs">reactjs</option>
                         <option value="vuejs">vuejs</option>
@@ -140,7 +164,7 @@ const Home = () => {
           pageNumber={pageNumber}
           updatePageNumber={updatePageNumber}
         /> }
-      </div>        
+      </main>       
    </div>
   );
 

@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 
 
 const Pagination = ({ pageNumber, pages, updatePageNumber }) => {
- debugger;
+
   let pageChange = (data) => {
     updatePageNumber(data.selected + 1);
   };
