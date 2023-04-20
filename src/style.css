@@ -220,6 +220,17 @@ btn {
 }
 
 
+.card-body:hover{
+    cursor: pointer;
+    opacity:0.5;
+}
+
+.icon--favorite:hover{
+    transition: 0.3s ease-in-out;
+    transform: scale(1.1);
+}
+
+
 .pagination {
     display: flex;
     justify-content: space-between;

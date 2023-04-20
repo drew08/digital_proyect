@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import Card from './Card';
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Favorite = () => {
-    debugger;
 
     const results = JSON.parse(localStorage.getItem('fetchedData'));
+
+    let [ favData, updateFavData] = useState(results); 
 
     var filterData= []; 
     results.map(item => {
@@ -14,7 +15,10 @@ const Favorite = () => {
         }
     })
 
-    debugger;
+    useEffect(()=>{
+        updateFavData(filterData);
+    }, [])
+
     return (
         <div className="main-Cards">
             <div className="taps">
@@ -23,7 +27,7 @@ const Favorite = () => {
             </div>
             <div className="main-conteiner">
                 <section className="cards-list">
-                        <Card results={filterData} />
+                        <Card results={favData} />
                 </section>
             </div>
         </div>    

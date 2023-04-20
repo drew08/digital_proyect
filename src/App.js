@@ -34,13 +34,14 @@ const Home = () => {
   // api
   let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
 
-
     useEffect(() => {
       (async function () {
         let data = await fetch(api).then((res) => res.json());
         var newData= [];
         debugger;
         data.hits.map(item => {
+
+          // select only those with non-null data
           if(item.author && item.story_title && item.story_url && item.created_at){ 
            let newItem ={
              id: item.story_id,
@@ -48,10 +49,13 @@ const Home = () => {
              story_title:item.story_title ,
              story_url:item.story_url ,
              created_at:item.created_at ,
-             isFavorite:false
+             isFavorite:false,
+             type: type
            }
             newData.nbPages =  data.nbPages;  
           
+           debugger;
+            // check that the ids are unique 
             const checkUnique = newData.some(element => {
               if (element.id === item.story_id) {
                   return true;
@@ -72,28 +76,38 @@ const Home = () => {
 
     
     useEffect(() => {
+
+      if(type === "angular"){
+        localStorage.setItem('angularData', JSON.stringify(fetchedData));
+      }
+      
+      if(type === "reactjs"){
+        localStorage.setItem('reactjsData', JSON.stringify(fetchedData));
+      }
+
+      if(type === "vuejs"){
+        localStorage.setItem('vuejsData', JSON.stringify(fetchedData));
+      }
+
       localStorage.setItem('fetchedData', JSON.stringify(fetchedData));
+
+
     }, [fetchedData]);
 
-    console.log(fetchedData); 
         
     function handleChange(event) {
-      debugger;
-      const {name, value} = event.target
+      const {value} = event.target
       updateType(value);
   }
 
   function UpdateData(newValue) {
-    debugger;
     updateFetchedData(prev => {
-      debugger;
       return prev.map((el) => {
         return el.id === newValue.id ? {...el, isFavorite: !el.isFavorite} : el
       })
     })      
   }
 
-  debugger;
   return (
     
     <div className="App">
