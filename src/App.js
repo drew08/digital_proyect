@@ -28,15 +28,25 @@ const Home = () => {
   let [pageNumber, updatePageNumber] = useState(1);     // pagination
   let [fetchedData, updateFetchedData] = useState([]);   ///  API data
 
-  let [type, updateType] = React.useState('');    
+  let [type, updateType] = React.useState('');    // selelect option
 
- // api
+  let [totalPages, updateTotalPagesData] = useState(1);   ///  API data
+
+ // call api
  let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
   debugger;
-    
+  
     useEffect(() => {
       if (window.localStorage !== undefined) {
-        let nbPages = JSON.parse(localStorage.getItem('nbPages'));
+        localStorage.removeItem("angularData");
+        localStorage.removeItem("reactjsData");
+        localStorage.removeItem("vuejsData");        
+      }
+    }, [pageNumber]);
+
+    useEffect(() => {
+      if (window.localStorage !== undefined) {
+        
         let angularItems = JSON.parse(localStorage.getItem('angularData'));
         let reactItems = JSON.parse(localStorage.getItem('reactjsData'));
         let vueItems = JSON.parse(localStorage.getItem('vuejsData'));
@@ -72,8 +82,8 @@ const Home = () => {
              isFavorite:false,
              type: type
            }
-            newData.nbPages =  data.nbPages;  
-            localStorage.setItem('nbPages', JSON.stringify(newData.nbPages));
+
+            updateTotalPagesData(data.nbPages); 
            
             // check that the ids are unique 
             const checkUnique = newData.some(element => {
@@ -160,7 +170,7 @@ const Home = () => {
           </section>
         </div>
         { <Pagination
-          pages={fetchedData.nbPages}
+          pages={totalPages}
           pageNumber={pageNumber}
           updatePageNumber={updatePageNumber}
         /> }
