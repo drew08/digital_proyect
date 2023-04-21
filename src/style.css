@@ -194,12 +194,12 @@ btn {
     width: 15rem;
     height: 2rem;
     border-radius: 4px;
-    border: solid 1px #2e2e2e;
+    /* border: solid 1px #2e2e2e; */
     background-color: #fff;
     text-transform: capitalize;
     color: #292929;
     text-align: left;
-    padding: 0 15px;
+    /* padding: 0 15px; */
     font-size: 16px;
     cursor: pointer;
 

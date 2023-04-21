@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Favorite from './components/Card/Favorite';
-
+import Select from 'react-select';
 
 function App() {
   return (
@@ -30,12 +30,13 @@ const Home = () => {
 
   let [type, updateType] = React.useState('');    // selelect option
 
-  let [totalPages, updateTotalPagesData] = useState(1);   ///  API data
+  let [totalPages, updateTotalPagesData] = useState(1);   // totalPages
 
- // call api
- let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type}&page=${pageNumber}`;
+     // call api
 
-  
+    let api = `https://hn.algolia.com/api/v1/search_by_date?query=${type?.value}&page=${pageNumber}`;
+
+
     useEffect(() => {
       if (window.localStorage !== undefined) {
         localStorage.removeItem("angularData");
@@ -51,13 +52,13 @@ const Home = () => {
         let reactItems = JSON.parse(localStorage.getItem('reactjsData'));
         let vueItems = JSON.parse(localStorage.getItem('vuejsData'));
       
-        if (angularItems  && type === "angular") {
+        if (angularItems  && type?.value === "angular") {
             updateFetchedData(angularItems);
         }
-        if (reactItems && type === "reactjs") {
+        if (reactItems && type?.value === "reactjs") {
           updateFetchedData(reactItems);
         }
-        if (vueItems && type === "vuejs") {
+        if (vueItems && type?.value === "vuejs") {
           updateFetchedData(vueItems);
         }
       }  
@@ -66,7 +67,9 @@ const Home = () => {
  
     useEffect(() => {
       (async function () {
+
         let data = await fetch(api).then((res) => res.json());
+        
         var newData= [];
         
         data.hits.map(item => {
@@ -80,7 +83,7 @@ const Home = () => {
              story_url:item.story_url ,
              created_at:item.created_at ,
              isFavorite:false,
-             type: type
+             type: type?.value
            }
 
             updateTotalPagesData(data.nbPages); 
@@ -114,13 +117,13 @@ const Home = () => {
     
     useEffect(() => {
    
-      if(type === "angular"){
+      if(type?.value === "angular"){
         localStorage.setItem('angularData', JSON.stringify(fetchedData));
       }    
-      if(type === "reactjs"){
+      if(type?.value === "reactjs"){
         localStorage.setItem('reactjsData', JSON.stringify(fetchedData));
       }
-      if(type === "vuejs"){
+      if(type?.value === "vuejs"){
         localStorage.setItem('vuejsData', JSON.stringify(fetchedData));
       }
       localStorage.setItem('fetchedData', JSON.stringify(fetchedData));
@@ -128,8 +131,7 @@ const Home = () => {
 
         
     function handleChange(event) {
-      const {value} = event.target
-      updateType(value);
+      updateType(event);
   }
 
   function UpdateData(newValue) {
@@ -141,6 +143,17 @@ const Home = () => {
     })      
   }
 
+
+  const data = [
+    {value: 'angular', text: 'angular', icon: <img   src="../images/angular.png"   alt="icon-angular" className="icon--angular"/>
+    },
+    {value: 'reactjs', text: 'reactjs',  icon: <img   src="../images/react.png"   alt="icon-react" className="icon--react"/>
+    },
+    {value: 'vuejs', text: 'vuejs', icon:  <img   src="../images/vue.png"   alt="icon-vue" className="icon--vue"/>
+    }
+  ];
+
+
   return (
     
     <div className="App">
@@ -150,19 +163,19 @@ const Home = () => {
             <NavLink to="/favCards" className="tap">My faves</NavLink>
         </div>   
         <div className="main-conteiner">
-        <div className="selectType">
-              <select className="type-select"
-                        id="type"
-                        value={type}
-                        onChange={handleChange}
-                        name="type"
-                    >
-                        <option value="" disabled>Select your news</option>
-                        <option value="angular">angular</option>
-                        <option value="reactjs">reactjs</option>
-                        <option value="vuejs">vuejs</option>
-
-              </select>
+        <div className="selectType ">
+              <Select  className="type-select"
+                placeholder="Select your news"
+                value={type}
+                options={data}
+                onChange={handleChange}
+                getOptionLabel={e => (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    {e.icon}
+                    <span style={{ marginLeft: 10 }}>{e.text}</span>
+                  </div>
+                )}
+              />
           </div>
         
           <section className="cards-list">
